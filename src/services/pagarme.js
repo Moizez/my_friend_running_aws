@@ -6,6 +6,8 @@ const api = axios.create({
 
 const api_key = process.env.REACT_APP_PAGARME
 
+console.log(api_key)
+
 export default async (endpoint, data, method = 'post') => {
     try {
         const response = await api[method](endpoint, {
