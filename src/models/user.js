@@ -23,6 +23,11 @@ const User = new Schema({
         require: [true, 'Foto é obrigatória!']
     },
 
+    phone: {
+        type: String,
+        require: [true, 'Telefone é obrigatório!']
+    },
+
     cpf: {
         type: String,
         require: [true, 'CPF é obrigatório!']
@@ -33,7 +38,7 @@ const User = new Schema({
         require: [true, 'Data de nascimento é obrigatória!']
     },
 
-    costumerId: {
+    customerId: {
         type: String,
         //require: [true, 'Foto é obrigatória!']
     },

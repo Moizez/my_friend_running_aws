@@ -1,12 +1,9 @@
 import axios from 'axios';
+import {api_key} from '../data/keys.js'
 
 const api = axios.create({
     baseURL: 'https://api.pagar.me/1',
 });
-
-const api_key = process.env.REACT_APP_PAGARME
-
-console.log(api_key)
 
 export default async (endpoint, data, method = 'post') => {
     try {

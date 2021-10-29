@@ -94,31 +94,37 @@ router.put('/:userId/accept', async (req, res) => {
         const { userId } = req.params
         const user = await User.findById(userId)
 
+        console.log('UsuárioID: ', userId)
+        console.log('Usuário: ', user)
+
         const pagarmeUser = await pagarme('/customers', {
             external_id: userId,
             name: user.name,
-            type: 'br',
+            type: 'individual',
+            country: 'br',
             email: user.email,
             documents: [
                 {
                     type: 'cpf',
-                    number: user.cpf
-                }
+                    number: user.cpf,
+                },
             ],
-            phone_numbers: [user.phone],
-            birthday: user.birthday
+            phone_numbers: [`+55${user.phone}`],
+            birthday: user.birthday,
         })
+
+        console.log('PagarMe: ', pagarmeUser)
 
         if (pagarmeUser.error) {
             throw pagarmeUser
         }
 
         await User.findByIdAndUpdate(userId, {
-            status: 'A',
-            customerId: pagarmeUser.data.id
+            customerId: pagarmeUser.data.id,
+            status: 'A'
         })
 
-        res.json({ message: 'Usuário aceito na plataforma!'})
+        res.json({ message: 'Usuário aceito na plataforma!' })
 
     } catch (error) {
         res.json({ error: true, message: error.message })
