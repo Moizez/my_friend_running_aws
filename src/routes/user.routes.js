@@ -5,6 +5,7 @@ import moment from 'moment'
 import Busboy from 'busboy'
 
 import aws from '../services/aws.js'
+import pagarme from '../services/pagarme.js'
 
 import User from '../models/user.js'
 import Challenge from '../models/challenge.js'
@@ -87,17 +88,37 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-router.put('/:userId/challenge', async (req, res) => {
+router.put('/:userId/accept', async (req, res) => {
     try {
 
         const { userId } = req.params
         const user = await User.findById(userId)
 
-        // const challenge = await Challenge.findOne({
-        //     status: 'A'
-        // })
+        const pagarmeUser = await pagarme('/customers', {
+            external_id: userId,
+            name: user.name,
+            type: 'br',
+            email: user.email,
+            documents: [
+                {
+                    type: 'cpf',
+                    number: user.cpf
+                }
+            ],
+            phone_numbers: [user.phone],
+            birthday: user.birthday
+        })
 
-        // if (!)
+        if (pagarmeUser.error) {
+            throw pagarmeUser
+        }
+
+        await User.findByIdAndUpdate(userId, {
+            status: 'A',
+            customerId: pagarmeUser.data.id
+        })
+
+        res.json({ message: 'Usuário aceito na plataforma!'})
 
     } catch (error) {
         res.json({ error: true, message: error.message })
