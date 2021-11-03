@@ -1,10 +1,11 @@
 import AWS from 'aws-sdk';
+import { aws_keys } from '../data/keys.js'
 
 export default {
-    IAM_USER_KEY: 'AKIA5XJ7EV4MEHUK5VV7', //AKIA5XJ7EV4MEHUK5VV7
-    IAM_USER_SECRET: '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',
-    BUCKET_NAME: 'money-runners-ws',
-    AWS_REGION: 'us-east-1',
+    IAM_USER_KEY: aws_keys.IAM_USER_KEY,
+    IAM_USER_SECRET: aws_keys.IAM_USER_SECRET,
+    BUCKET_NAME: aws_keys.BUCKET_NAME,
+    AWS_REGION: aws_keys.AWS_REGION,
     uploadToS3: function (file, filename, acl = 'public-read') {
         return new Promise((resolve, reject) => {
             let IAM_USER_KEY = this.IAM_USER_KEY;

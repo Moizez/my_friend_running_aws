@@ -7,6 +7,7 @@ import busboyBodyParser from 'busboy-body-parser'
 import './database.js'
 
 import userRoutes from './src/routes/user.routes.js'
+import challangeRoutes from './src/routes/challenge.routes.js'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(busboyBodyParser())
 app.use(cors())
 
 app.use('/user', userRoutes)
+app.use('/challenge', challangeRoutes)
 
 app.listen(8000, () => {
     console.log('MONEY RUNNER WS RODANDO...')
